@@ -30,9 +30,6 @@ public class User {
         if (amount < 0){
             throw new IllegalDepositException();
         }
-        if(getBalance() - amount < 0){
-            throw new InsufficientBalanceException(getBalance(), amount);
-        }
         setBalance(balance + amount);
         return true;
     }
@@ -40,6 +37,9 @@ public class User {
     public boolean decreaseBalance(int amount){
         if (amount < 0){
             throw new IllegalDepositException();
+        }
+        if(getBalance() - amount < 0){
+            throw new InsufficientBalanceException(getBalance(), amount);
         }
         setBalance(balance - amount);
         return true;
