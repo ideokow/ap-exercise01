@@ -3,7 +3,8 @@ package models;
 public enum PropertyStatus {
     FOR_SALE(1),
     FOR_RENT(2),
-    FOR_BOTH(3);
+    FOR_BOTH(3),
+    NO_BOTH (4);
 
     private final int state;
 

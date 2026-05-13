@@ -1,6 +1,9 @@
 package models;
 
-public abstract class House {
+import java.io.Serializable;
+
+public abstract class House implements Serializable {
+
     // properties
     private final String uniqueID;
     private final String ownerID;
@@ -28,16 +31,16 @@ public abstract class House {
     }
 
     // functions
-    double calculateBasePrice() {
-        return getArea() * BASE_PRICE_PER_METER * getNeighborhood().getCoefficient();
+    long calculateBasePrice() {
+        return (long) (getArea() * BASE_PRICE_PER_METER * getNeighborhood().getCoefficient());
     }
 
-    double calculateSalePrice(){
-        return calculateBasePrice();
+    long calculateSalePrice(){
+        return (long) calculateBasePrice();
     };
 
-    double calculateRentPrice(){
-        return calculateSalePrice() * RENT_RATE;
+    long calculateRentPrice(){
+        return (long) (calculateSalePrice() * RENT_RATE);
     };
 
     // --- getters ---
@@ -71,5 +74,13 @@ public abstract class House {
 
     public PropertyStatus getStatus() {
         return status;
+    }
+
+    public double getSalePrice() {
+        return calculateSalePrice();
+    }
+
+    public double getRentPrice() {
+        return calculateRentPrice();
     }
 }

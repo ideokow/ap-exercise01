@@ -18,8 +18,8 @@ public class Villa extends House {
 
     // functions
     @Override
-    double calculateSalePrice(){
-        return calculateBasePrice() + (yardArea * YARD_PRICE_PER_METER) + (floors * FLOOR_PREMIUM);
+    long calculateSalePrice(){
+        return (long) (calculateBasePrice() + (yardArea * YARD_PRICE_PER_METER) + (floors * FLOOR_PREMIUM));
     }
 
     // --- getters ---

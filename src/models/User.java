@@ -9,7 +9,7 @@ public class User {
     private final String uniqueID;
     private final String username;
     private final String passwordHash;
-    private int balance;
+    private long balance;
     private final ArrayList<String> ownedPropertyIDs;
     private final ArrayList<String> rentedPropertyIDs;
     private final ArrayList<String> contractIDs;
@@ -26,7 +26,7 @@ public class User {
     }
 
     // functions
-    public boolean increaseBalance(int amount){
+    public boolean increaseBalance(long amount){
         if (amount < 0){
             throw new IllegalDepositException();
         }
@@ -34,7 +34,7 @@ public class User {
         return true;
     }
 
-    public boolean decreaseBalance(int amount){
+    public boolean decreaseBalance(long amount){
         if (amount < 0){
             throw new IllegalDepositException();
         }
@@ -58,11 +58,11 @@ public class User {
         return passwordHash;
     }
 
-    public int getBalance() {
+    public long getBalance() {
         return balance;
     }
 
-    public void setBalance(int balance) {
+    public void setBalance(long balance) {
         this.balance = balance;
     }
 

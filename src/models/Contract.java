@@ -7,14 +7,14 @@ public class Contract {
     private final String partyOneID; // Owner
     private final String partyTwoID; // Buyer (or tenant)
     private final ContractType type;
-    private final double finalPrice;
+    private final long finalPrice;
     private boolean isCancelled;
 
     // constants
     protected final double PENALTY_RATE = 0.1;
 
     // construction
-    public Contract(String uniqueID, String propertyID, String partyOneID, String partyTwoID, ContractType type, double finalPrice) {
+    public Contract(String uniqueID, String propertyID, String partyOneID, String partyTwoID, ContractType type, long finalPrice) {
         this.uniqueID = uniqueID;
         this.propertyID = propertyID;
         this.partyOneID = partyOneID;
@@ -50,7 +50,7 @@ public class Contract {
         return type;
     }
 
-    public double getFinalPrice() {
+    public long getFinalPrice() {
         return finalPrice;
     }
 

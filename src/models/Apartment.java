@@ -12,8 +12,8 @@ public class Apartment extends House {
 
     // functions
     @Override
-    double calculateSalePrice(){
-        return calculateBasePrice() * (1 + (0.03*getBedrooms())) * (1 + (0.01*getFloors()));
+    long calculateSalePrice(){
+        return (long) (calculateBasePrice() * (1 + (0.03*getBedrooms())) * (1 + (0.01*getFloors())));
     }
 
     // --- getters ---

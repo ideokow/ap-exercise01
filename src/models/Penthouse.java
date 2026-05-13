@@ -16,8 +16,8 @@ public class Penthouse extends House {
 
     // function
     @Override
-    double calculateSalePrice(){
-        return (calculateBasePrice() * LUXURY_COEFFICIENT) + (terraceArea * TERRACE_PRICE_PER_METER);
+    long calculateSalePrice(){
+        return (long) ((calculateBasePrice() * LUXURY_COEFFICIENT) + (terraceArea * TERRACE_PRICE_PER_METER));
     }
 
     // --- getter ---
