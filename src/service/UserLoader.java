@@ -1,5 +1,6 @@
 package service;
 
+import java.io.EOFException;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -19,6 +20,8 @@ public class UserLoader {
                 new FileInputStream("./data/Users.user")
         )){
             extracted_users = (ArrayList<User>) ois.readObject();
+        } catch (EOFException ignore){
+            extracted_users = new ArrayList<>();
         } catch (IOException e){
             System.out.print("Error during reading data: ");
             e.printStackTrace();
