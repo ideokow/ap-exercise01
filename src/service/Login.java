@@ -1,12 +1,10 @@
 package service;
 
-import models.House;
-import models.User;
-import service.Interface;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
+
+import models.*;
 
 public class Login {
     // private constructor to avoid making instance!
@@ -16,19 +14,9 @@ public class Login {
         System.out.println("--- Welcome to Institution CLI Application ---");
 
         // load users
-        ArrayList<User> extracted_users = new ArrayList<User>();
-        try (ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream("./data/Users.user")
-        )){
-            extracted_users = (ArrayList<User>) ois.readObject();
-        } catch (IOException e){
-            System.out.println("Warning: there is no user data or there is an error during reading user data");
-//            e.printStackTrace();
-        } catch (Exception exception){
-            System.out.print("Unexpected Error: ");
-            exception.printStackTrace();
-        }
+        ArrayList<User> extracted_users = UserLoader.user_loader();
 
+        // login page!
         while (true){
             Scanner scanner = new Scanner(System.in);
             System.out.println("Enter your Username or if you don't have account enter new Username:");
@@ -62,9 +50,9 @@ public class Login {
                     entered_username,
                     PasswordHasher.hashPassword(entered_pass),
                     0,
-                    new ArrayList<String>(),
-                    new ArrayList<String>(),
-                    new ArrayList<String>()
+                    new ArrayList<>(),
+                    new ArrayList<>(),
+                    new ArrayList<>()
                 );
 
                 // write new user
@@ -77,7 +65,8 @@ public class Login {
                     e.printStackTrace();
                 }
 
-                // enter interface
+                // Hello!
+                System.out.println("Hello " + the_user.getUsername() + "!!");
                 Interface.interface_loader(the_user);
 
             } else {
@@ -85,6 +74,8 @@ public class Login {
                 String entered_pass = scanner.next();
                 if (PasswordHasher.hashPassword(entered_pass).equals(the_user.getPasswordHash())){
                     System.out.println("Logging In ...");
+                    // Hello!
+                    System.out.println("Hello " + the_user.getUsername() + "!!");
                     Interface.interface_loader(the_user);
                     break;
                 } else {

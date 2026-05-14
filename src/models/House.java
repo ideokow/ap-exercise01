@@ -12,7 +12,7 @@ public abstract class House implements Serializable {
     private final Neighborhood neighborhood;
     private final int bedrooms;
     private final int bathrooms;
-    private final PropertyStatus status;
+    private PropertyStatus status;
 
     // constants
     protected static final long BASE_PRICE_PER_METER = 50_000_000L;
@@ -74,6 +74,10 @@ public abstract class House implements Serializable {
 
     public PropertyStatus getStatus() {
         return status;
+    }
+
+    public void setStatus(PropertyStatus status) {
+        this.status = status;
     }
 
     public double getSalePrice() {

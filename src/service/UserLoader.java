@@ -5,20 +5,20 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
 
-import models.House;
+import models.User;
 
-public class PropertyLoader {
+public class UserLoader {
 
-    private PropertyLoader() {}
+    private UserLoader() {}
 
-    protected static ArrayList<House> property_loader(){
+    protected static ArrayList<User> user_loader(){
 
-        ArrayList<House> extracted_houses = new ArrayList<>();
+        ArrayList<User> extracted_users = new ArrayList<>();
 
         try (ObjectInputStream ois = new ObjectInputStream(
-                new FileInputStream("./data/Houses.house")
+                new FileInputStream("./data/Users.user")
         )){
-            extracted_houses = (ArrayList<House>) ois.readObject();
+            extracted_users = (ArrayList<User>) ois.readObject();
         } catch (IOException e){
             System.out.print("Error during reading data: ");
             e.printStackTrace();
@@ -27,6 +27,6 @@ public class PropertyLoader {
             exception.printStackTrace();
         }
 
-        return extracted_houses;
+        return extracted_users;
     }
 }
