@@ -6,8 +6,8 @@ public abstract class House implements Serializable {
 
     // properties
     private final String uniqueID;
-    private final String ownerID;
-    private final String tenantID;
+    private String ownerID;
+    private String tenantID;
     private final double area;
     private final Neighborhood neighborhood;
     private final int bedrooms;
@@ -52,8 +52,16 @@ public abstract class House implements Serializable {
         return ownerID;
     }
 
+    public void setOwnerID(String ownerID) {
+        this.ownerID = ownerID;
+    }
+
     public String getTenantID() {
         return tenantID;
+    }
+
+    public void setTenantID(String tenantID) {
+        this.tenantID = tenantID;
     }
 
     public double getArea() {
@@ -80,11 +88,11 @@ public abstract class House implements Serializable {
         this.status = status;
     }
 
-    public double getSalePrice() {
+    public long getSalePrice() {
         return calculateSalePrice();
     }
 
-    public double getRentPrice() {
+    public long getRentPrice() {
         return calculateRentPrice();
     }
 }

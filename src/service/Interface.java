@@ -10,7 +10,7 @@ public class Interface {
     private Interface() {}
 
     // main function
-    protected static void interface_loader(User the_user) {
+    protected static void interface_loader(String the_user) {
         Scanner scanner = new Scanner(System.in);
 
         // mode selection listener
@@ -19,7 +19,8 @@ public class Interface {
         System.out.println("[2:    for-RENT properties]");
         System.out.println("[3: advertise new property]");
         System.out.println("[4:      view own property]");
-        System.out.print("(Type one of 1/2/3/4) > ");
+        System.out.println("[5:        account balance]");
+        System.out.print("(Type one of 1/2/3/4/5) > ");
 
         while (true){
             String mode = scanner.next();
@@ -32,12 +33,72 @@ public class Interface {
             } else if ("4".equals(mode)) {
                 ownViewer(the_user);
                 // after own property check user will be back in main menu
+            } else if ("5".equals(mode)) {
+                balanceViewer(the_user);
             } else if ("exit".equals(mode)) break;
-            System.out.print("(Type one of 1/2/3/4) > ");
+            System.out.print("(Type one of 1/2/3/4/5) > ");
         }
     }
 
-    private static void ownViewer(User the_user) {
+    private static void balanceViewer(String the_user_ID){
+
+        ArrayList<User> users = UserLoader.user_loader();
+        User the_user = null;
+
+        for(User user: users){
+            if (user.getUniqueID().equals(the_user_ID)){
+                the_user = user;
+            }
+        }
+
+        if (the_user == null){
+            System.out.println("There's an error in datafiles");
+            return;
+        }
+
+        System.out.println("Your balance: " + the_user.getBalance());
+
+        Scanner scanner = new Scanner(System.in);
+        String command = null;
+
+        while (!"exit".equals(command)){
+            // read command
+            System.out.print("balance menu > ");
+            command = scanner.nextLine();
+
+            if ("charge".equals(command.split(" ")[0])) {
+
+                long amount;
+
+                try {
+                    amount = Long.parseLong(command.split(" ")[1]);
+                    if (amount < 0){
+                        System.out.println("you must enter a non-negative number!");
+                        return;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return;
+                }
+
+                for (User user: users){
+                    if (user.getUniqueID().equals(the_user.getUniqueID())){
+                        user.increaseBalance(amount);
+                    }
+                }
+                UserLoader.user_write(users);
+
+                System.out.println("You charged your account: +" + amount);
+                break;
+
+            } else if ("exit".equals(command.split(" ")[0])) {
+                break;
+            }
+        }
+
+    }
+
+    private static void ownViewer(String the_user) {
         // load properties
         ArrayList<House> properties = PropertyLoader.property_loader();
 
@@ -46,7 +107,7 @@ public class Interface {
         display_all_properties(properties, 3, the_user);
     }
 
-    private static void newProperty(User the_user){
+    private static void newProperty(String the_user){
         Scanner scanner = new Scanner(System.in);
         // load properties
         ArrayList<House> properties = PropertyLoader.property_loader();
@@ -143,7 +204,7 @@ public class Interface {
             // making object
             new_house = new Apartment(
                     Integer.valueOf(properties.size()+1).toString(),
-                    the_user.getUniqueID(),
+                    the_user,
                     "",
                     area,
                     hood_,
@@ -184,7 +245,7 @@ public class Interface {
             // making object
             new_house = new Villa(
                     Integer.valueOf(properties.size()+1).toString(),
-                    the_user.getUniqueID(),
+                    the_user,
                     "",
                     area,
                     hood_,
@@ -214,7 +275,7 @@ public class Interface {
             // making object
             new_house = new Penthouse(
                     Integer.valueOf(properties.size()+1).toString(),
-                    the_user.getUniqueID(),
+                    the_user,
                     "",
                     area,
                     hood_,
@@ -234,7 +295,7 @@ public class Interface {
         System.out.println("Your property added to system!!");
     }
 
-    private static void saleViewer(User the_user){
+    private static void saleViewer(String the_user){
         // load properties
         ArrayList<House> properties = PropertyLoader.property_loader();
 
@@ -250,17 +311,44 @@ public class Interface {
             System.out.print("(for-SALE mode) > ");
             command = scanner.nextLine();
 
-            switch (command.split(" ")[0]){
-                case "select":
-                    selecting_in_main_menu(command.split(" ")[1], properties);
-                case "exit":
-                    break;
+            if ("select".equals(command.split(" ")[0])) {
+                selecting_in_main_menu(command.split(" ")[1], properties);
+                break;
+            } else if ("buy".equals(command.split(" ")[0])) {
+                buying_recall(command.split(" ")[1], the_user, properties);
+                break;
+            } else if ("exit".equals(command.split(" ")[0])) {
+                break;
             }
 
         }
     }
 
-    private static void rentViewer(User the_user){
+    private static void buying_recall(String property_id, String the_user, ArrayList<House> property_list){
+        System.out.println("You hava selected property with this ID: " + property_id + " for buying!!");
+        House selected = null;
+
+        for (House h: property_list){
+            if (h.getUniqueID().equals(property_id)){
+                selected = h;
+                break;
+            }
+        }
+
+        if (selected != null && (selected.getStatus().getState() == 1 || selected.getStatus().getState() == 3)){
+            int buy = Dealer.buy_house(selected, the_user);
+            if (buy == 1) {
+                System.out.println("You have bought property successfully!!");
+
+            }
+            else if (buy == 0) System.out.println("You don't have enough money!!");
+            else System.out.println("Error during buy; err code: " + buy);
+        } else {
+            System.out.println("You have entered wrong ID! Try again.");
+        }
+    }
+
+    private static void rentViewer(String the_user){
         // load properties
         ArrayList<House> properties = PropertyLoader.property_loader();
 
@@ -276,11 +364,10 @@ public class Interface {
             System.out.print("(for-RENT mode) > ");
             command = scanner.nextLine();
 
-            switch (command.split(" ")[0]){
-                case "select":
-                    selecting_in_main_menu(command.split(" ")[1], properties);
-                case "exit":
-                    break;
+            if ("select".equals(command.split(" ")[0])) {
+                selecting_in_main_menu(command.split(" ")[1], properties);
+            } else if ("exit".equals(command.split(" ")[0])) {
+                break;
             }
 
         }
@@ -349,7 +436,7 @@ public class Interface {
 
     }
 
-    private static void display_all_properties(ArrayList<House> property_list, int filter, User viewer){
+    private static void display_all_properties(ArrayList<House> property_list, int filter, String viewer){
         int c=1;
         for (House the_house: property_list){
 
@@ -357,14 +444,14 @@ public class Interface {
             boolean condition = (
                 (filter == 1 &&
                         (the_house.getStatus().getState() == 1 || the_house.getStatus().getState() == 3) &&
-                        (!viewer.getUniqueID().equals(the_house.getOwnerID())) &&
-                        (!viewer.getUniqueID().equals(the_house.getTenantID()))) ||
+                        (!viewer.equals(the_house.getOwnerID())) &&
+                        (!viewer.equals(the_house.getTenantID()))) ||
                 (filter == 2 &&
                         (the_house.getStatus().getState() == 2 || the_house.getStatus().getState() == 3) &&
-                        (!viewer.getUniqueID().equals(the_house.getOwnerID())) &&
-                        (!viewer.getUniqueID().equals(the_house.getTenantID()))) ||
+                        (!viewer.equals(the_house.getOwnerID())) &&
+                        (!viewer.equals(the_house.getTenantID()))) ||
                 (filter == 3 &&
-                        (viewer.getUniqueID().equals(the_house.getOwnerID())))
+                        (viewer.equals(the_house.getOwnerID())))
             );
 
             if (condition){
@@ -418,16 +505,15 @@ public class Interface {
                 }
 
                 if (filter == 3){
-                    switch (the_house.getStatus().getState()) {
-                        case 1:
-                            System.out.println("Your property is in-Sale with price: " +
-                                    the_house.getSalePrice());
-                        case 2:
-                            System.out.println("Your property is in-Rent with price: " +
-                                    the_house.getRentPrice());
-                        case 3:
-                            System.out.println("Your property is in both rent and sale with sale price: " +
-                                    the_house.getSalePrice() + " and rent price: " + the_house.getRentPrice());
+                    if (the_house.getStatus().getState() == 1) {
+                        System.out.println("Your property is in-Sale with price: " +
+                                the_house.getSalePrice());
+                    } else if (the_house.getStatus().getState() == 2) {
+                        System.out.println("Your property is in-Rent with price: " +
+                                the_house.getRentPrice());
+                    } else if (the_house.getStatus().getState() == 3) {
+                        System.out.println("Your property is in both rent and sale with sale price: " +
+                                the_house.getSalePrice() + " and rent price: " + the_house.getRentPrice());
                     }
                 }
 

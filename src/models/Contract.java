@@ -1,6 +1,8 @@
 package models;
 
-public class Contract {
+import java.io.Serializable;
+
+public class Contract implements Serializable {
     // properties
     private final String uniqueID;
     private final String propertyID;

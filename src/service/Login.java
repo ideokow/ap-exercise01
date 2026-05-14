@@ -60,7 +60,7 @@ public class Login {
 
                 // Hello!
                 System.out.println("Hello " + the_user.getUsername() + "!!");
-                Interface.interface_loader(the_user);
+                Interface.interface_loader(the_user.getUniqueID());
 
             } else {
                 System.out.print("Enter Password: ");
@@ -69,7 +69,7 @@ public class Login {
                     System.out.println("Logging In ...");
                     // Hello!
                     System.out.println("Hello " + the_user.getUsername() + "!!");
-                    Interface.interface_loader(the_user);
+                    Interface.interface_loader(the_user.getUniqueID());
                     break;
                 } else {
                     System.out.println("Wrong Password! try again");

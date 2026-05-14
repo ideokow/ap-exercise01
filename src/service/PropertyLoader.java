@@ -3,6 +3,7 @@ package service;
 import java.io.*;
 import java.util.ArrayList;
 
+import models.Contract;
 import models.House;
 
 public class PropertyLoader {

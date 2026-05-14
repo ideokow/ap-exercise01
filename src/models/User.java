@@ -27,15 +27,14 @@ public class User implements Serializable {
     }
 
     // functions
-    public boolean increaseBalance(long amount){
+    public void increaseBalance(long amount){
         if (amount < 0){
             throw new IllegalDepositException();
         }
         setBalance(balance + amount);
-        return true;
     }
 
-    public boolean decreaseBalance(long amount){
+    public void decreaseBalance(long amount){
         if (amount < 0){
             throw new IllegalDepositException();
         }
@@ -43,7 +42,18 @@ public class User implements Serializable {
             throw new InsufficientBalanceException(getBalance(), amount);
         }
         setBalance(balance - amount);
-        return true;
+    }
+
+    public void add_to_owned_properties(String property_uniqueID){
+        ownedPropertyIDs.add(property_uniqueID);
+    }
+
+    public void remove_from_owned_properties(String property_uniqueID) {
+        ownedPropertyIDs.remove(property_uniqueID);
+    }
+
+    public void add_to_contracts(String contract_uniqueID){
+        contractIDs.add(contract_uniqueID);
     }
 
     // --- getter and setters ---
