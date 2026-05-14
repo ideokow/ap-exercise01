@@ -1,6 +1,5 @@
 package service;
 
-import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -57,13 +56,7 @@ public class Login {
 
                 // write new user
                 extracted_users.add(the_user);
-                try (ObjectOutputStream oos = new ObjectOutputStream(
-                        new FileOutputStream("./data/Users.user"))) {
-                    // intellij starts from ap-exercise folder!
-                    oos.writeObject(extracted_users);
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
+                UserLoader.user_write(extracted_users);
 
                 // Hello!
                 System.out.println("Hello " + the_user.getUsername() + "!!");

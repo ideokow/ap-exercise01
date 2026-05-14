@@ -1,7 +1,5 @@
 package service;
 
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -231,13 +229,7 @@ public class Interface {
 
         // write object
         properties.add(new_house);
-        try (ObjectOutputStream oos = new ObjectOutputStream(
-            new FileOutputStream("./data/Houses.house"))) {
-            // intellij starts from ap-exercise folder!
-            oos.writeObject(properties);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        PropertyLoader.property_write(properties);
 
         System.out.println("Your property added to system!!");
     }

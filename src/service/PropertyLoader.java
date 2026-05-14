@@ -1,9 +1,6 @@
 package service;
 
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 import models.House;
@@ -31,5 +28,15 @@ public class PropertyLoader {
         }
 
         return extracted_houses;
+    }
+
+    protected static void property_write(ArrayList<House> properties) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream("./data/Houses.house"))) {
+            // intellij starts from ap-exercise folder!
+            oos.writeObject(properties);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

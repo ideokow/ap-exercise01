@@ -1,9 +1,6 @@
 package service;
 
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+import java.io.*;
 import java.util.ArrayList;
 
 import models.User;
@@ -31,5 +28,15 @@ public class UserLoader {
         }
 
         return extracted_users;
+    }
+
+    protected static void user_write(ArrayList<User> extracted_users){
+        try (ObjectOutputStream oos = new ObjectOutputStream(
+                new FileOutputStream("./data/Users.user"))) {
+            // intellij starts from ap-exercise folder!
+            oos.writeObject(extracted_users);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
