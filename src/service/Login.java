@@ -42,7 +42,7 @@ public class Login {
                     break;
                 }
                 // id
-                String unique_id = Integer.valueOf(extracted_users.size()).toString();
+                String unique_id = Integer.valueOf(extracted_users.size()+1).toString();
 
                 the_user = new User(
                     unique_id,

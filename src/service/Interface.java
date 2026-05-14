@@ -20,8 +20,9 @@ public class Interface {
         System.out.println("[3: advertise new property]");
         System.out.println("[4:      view own property]");
         System.out.println("[5:   view rented property]");
-        System.out.println("[6:        account balance]");
-        System.out.print("(Type one of 1/2/3/4/5/6) > ");
+        System.out.println("[6:         view contracts]");
+        System.out.println("[7:        account balance]");
+        System.out.print("(Type one of 1/2/3/4/5/6/7) > ");
 
         while (true){
             String mode = scanner.next();
@@ -38,9 +39,34 @@ public class Interface {
                 rentedViewer(the_user);
                 // after rented property check user will be back in main menu
             } else if ("6".equals(mode)) {
+                contractViewer(the_user);
+            } else if ("7".equals(mode)) {
                 balanceViewer(the_user);
             } else if ("exit".equals(mode)) break;
-            System.out.print("(Type one of 1/2/3/4/5/6) > ");
+            System.out.print("(Type one of 1/2/3/4/5/6/7) > ");
+        }
+    }
+
+    private static void contractViewer(String the_user) {
+        // load properties
+        ArrayList<Contract> contracts = ContractLoader.contract_loader();
+
+        // display
+        System.out.println(" --- Here's your contracts ---");
+        display_contracts(contracts, the_user);
+    }
+
+    private static void display_contracts(ArrayList<Contract> contracts, String the_user) {
+        int c = 1;
+        for (Contract contract : contracts){
+            if (contract.getPartyOneID().equals(the_user) || contract.getPartyTwoID().equals(the_user)) {
+                System.out.println("#" + c + " Contract with uniqueID: " + contract.getUniqueID());
+                System.out.println("Contract type: " + (contract.getType().getState() == 1 ? "Sale" : "Rent"));
+                System.out.println("Party 1: " + contract.getPartyOneID() + " | Party 2: " + contract.getPartyTwoID());
+                System.out.println("Property: " + contract.getPropertyID());
+                System.out.println("Final price: " + contract.getFinalPrice());
+                c += 1;
+            }
         }
     }
 
