@@ -1,10 +1,11 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import Exception.InsufficientBalanceException;
 import Exception.IllegalDepositException;
 
-public class User {
+public class User implements Serializable {
     // properties
     private final String uniqueID;
     private final String username;
@@ -15,7 +16,7 @@ public class User {
     private final ArrayList<String> contractIDs;
 
     // constructor
-    public User(String uniqueID, String username, String passwordHash, int balance, ArrayList<String> ownedPropertyIDs, ArrayList<String> rentedPropertyIDs, ArrayList<String> contractIDs) {
+    public User(String uniqueID, String username, String passwordHash, long balance, ArrayList<String> ownedPropertyIDs, ArrayList<String> rentedPropertyIDs, ArrayList<String> contractIDs) {
         this.uniqueID = uniqueID;
         this.username = username;
         this.passwordHash = passwordHash;

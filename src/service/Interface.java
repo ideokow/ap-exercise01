@@ -3,21 +3,17 @@ package service;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-import models.Apartment;
-import models.Villa;
-import models.Penthouse;
-import models.Neighborhood;
+import models.*;
 import service.PropertyLoader;
-import models.House;
 
 public class Interface {
     // private constructor to avoid making instance!
     private Interface() {}
 
     // main function
-    protected static void interface_loader(String user_ID) {
+    protected static void interface_loader(User the_user) {
 
-        System.out.println("Hello " + user_ID);
+        System.out.println("Hello " + the_user.getUsername() + "!!");
 
         // load properties
         ArrayList<House> properties = PropertyLoader.property_loader();
