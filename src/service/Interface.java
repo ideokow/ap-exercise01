@@ -19,8 +19,9 @@ public class Interface {
         System.out.println("[2:    for-RENT properties]");
         System.out.println("[3: advertise new property]");
         System.out.println("[4:      view own property]");
-        System.out.println("[5:        account balance]");
-        System.out.print("(Type one of 1/2/3/4/5) > ");
+        System.out.println("[5:   view rented property]");
+        System.out.println("[6:        account balance]");
+        System.out.print("(Type one of 1/2/3/4/5/6) > ");
 
         while (true){
             String mode = scanner.next();
@@ -32,12 +33,24 @@ public class Interface {
                 newProperty(the_user);
             } else if ("4".equals(mode)) {
                 ownViewer(the_user);
-                // after own property check user will be back in main menu
+                // after owned property check user will be back in main menu
             } else if ("5".equals(mode)) {
+                rentedViewer(the_user);
+                // after rented property check user will be back in main menu
+            } else if ("6".equals(mode)) {
                 balanceViewer(the_user);
             } else if ("exit".equals(mode)) break;
-            System.out.print("(Type one of 1/2/3/4/5) > ");
+            System.out.print("(Type one of 1/2/3/4/5/6) > ");
         }
+    }
+
+    private static void rentedViewer(String the_user) {
+        // load properties
+        ArrayList<House> properties = PropertyLoader.property_loader();
+
+        // display
+        System.out.println(" --- Here's your rented properties ---");
+        display_all_properties(properties, 4, the_user);
     }
 
     private static void balanceViewer(String the_user_ID){
@@ -366,10 +379,36 @@ public class Interface {
 
             if ("select".equals(command.split(" ")[0])) {
                 selecting_in_main_menu(command.split(" ")[1], properties);
+            } else if ("rent".equals(command.split(" ")[0])) {
+                renting_recall(command.split(" ")[1], the_user, properties);
+                break;
             } else if ("exit".equals(command.split(" ")[0])) {
                 break;
             }
 
+        }
+    }
+
+    private static void renting_recall(String property_id, String the_user, ArrayList<House> property_list){
+        System.out.println("You hava selected property with this ID: " + property_id + " for renting!!");
+        House selected = null;
+
+        for (House h: property_list){
+            if (h.getUniqueID().equals(property_id)){
+                selected = h;
+                break;
+            }
+        }
+
+        if (selected != null && (selected.getStatus().getState() == 2 || selected.getStatus().getState() == 3)){
+            int rent = Dealer.rent_house(selected, the_user);
+            if (rent == 1) {
+                System.out.println("You have rented property successfully!!");
+            }
+            else if (rent == 0) System.out.println("You don't have enough money!!");
+            else System.out.println("Error during buy; err code: " + rent);
+        } else {
+            System.out.println("You have entered wrong ID! Try again.");
         }
     }
 
@@ -451,7 +490,9 @@ public class Interface {
                         (!viewer.equals(the_house.getOwnerID())) &&
                         (!viewer.equals(the_house.getTenantID()))) ||
                 (filter == 3 &&
-                        (viewer.equals(the_house.getOwnerID())))
+                        (viewer.equals(the_house.getOwnerID()))) ||
+                (filter == 4 &&
+                        (viewer.equals(the_house.getTenantID())))
             );
 
             if (condition){
@@ -504,6 +545,7 @@ public class Interface {
 
                 }
 
+                // viewer is owner
                 if (filter == 3){
                     if (the_house.getStatus().getState() == 1) {
                         System.out.println("Your property is in-Sale with price: " +
@@ -515,6 +557,11 @@ public class Interface {
                         System.out.println("Your property is in both rent and sale with sale price: " +
                                 the_house.getSalePrice() + " and rent price: " + the_house.getRentPrice());
                     }
+                }
+
+                // viewer is tenant
+                else if (filter == 4){
+                    System.out.println("Owner ID: " + the_house.getOwnerID());
                 }
 
                 c += 1;

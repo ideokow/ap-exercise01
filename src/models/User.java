@@ -52,6 +52,14 @@ public class User implements Serializable {
         ownedPropertyIDs.remove(property_uniqueID);
     }
 
+    public void add_to_rented_properties(String property_uniqueID){
+        rentedPropertyIDs.add(property_uniqueID);
+    }
+
+    public void remove_from_rented_properties(String property_uniqueID){
+        rentedPropertyIDs.remove(property_uniqueID);
+    }
+
     public void add_to_contracts(String contract_uniqueID){
         contractIDs.add(contract_uniqueID);
     }
